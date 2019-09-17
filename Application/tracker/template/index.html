@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tracker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body style="background: lightgray">
+<div class="container-fluid">
+    <div class="container">
+        <h2>Currency exchange tracker</h2>
+        <table class="table table-striped bg-light">
+            <thead style="color: #002a80; background: yellow">
+                <td scope="col"><b>Base</b></td>
+                <td scope="col"><b>Target</b></td>
+                <td scope="col"><b>Price</b></td>
+            </thead>
+            <tbody>
+                {% for item in context %}
+                    <tr>
+                        {% for param in item %}
+                        <td>
+                            {{param}}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="row navbar">
+            <div class="col-10">
+                <form action="/" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" class="btn btn-primary" value="Add">
+                </form>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-success" onclick="window.location.reload();">Refresh</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
