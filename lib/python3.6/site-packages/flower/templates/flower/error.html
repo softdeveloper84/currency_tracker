@@ -1,0 +1,10 @@
+{% extends "flower/base.html" %}
+
+{% block container %}
+    <div class="span12">
+        <p class="text-danger">Error {{ status_code }}
+            {% if message %}:<span class="warning"> {{ message }}</span>{% endif %}
+        </p>
+    {% include 'flower/traceback.html' %}
+    </div>
+{% endblock %}

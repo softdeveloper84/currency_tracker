@@ -1,0 +1,53 @@
+{% extends "flower/base.html" %}
+
+{% block navbar %}
+  {% set active_tab="dashboard" %}
+  {% include "flower/navbar.html" %}
+{% endblock %}
+
+{% block container %}
+  <div class="container-fluid">
+    <div class="btn-group btn-group-justified">
+        <a id="btn-active" class="btn btn-default btn-large" href="{{ url('flower:tasks') }}?state=STARTED">Active: {{ alive_workers() }}</a>
+        <a id="btn-processed" class="btn btn-default btn-large" href="{{ url('flower:tasks') }}">Processed: {{ task_received() }}</a>
+        <a id="btn-failed" class="btn btn-default btn-large" href="{{ url('flower:tasks') }}?state=FAILURE">Failed: {{ task_failed() }}</a>
+        <a id="btn-succeeded" class="btn btn-default btn-large" href="{{ url('flower:tasks') }}?state=SUCCESS">Succeeded: {{ task_succeeded() }}</a>
+        <a id="btn-retried" class="btn btn-default btn-large" href="{{ url('flower:tasks') }}?state=RETRY">Retried: {{ task_retried() }}</a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+    <table id="workers-table" class="table table-bordered table-striped">
+      <thead>
+        <tr>
+            <th>Worker Name</th>
+            <th>Status</th>
+            <th>Active</th>
+            <th>Processed</th>
+            <th>Failed</th>
+            <th>Succeeded</th>
+            <th>Retried</th>
+            <th>Load Average</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for name, info in workers.items() %}
+        <tr id="{{ name|e }}">
+            <td><a href="{{ url('flower:worker', name)  }}">{{ name }}</a></td>
+            <td>{{ info.get('status', None) }}</td>
+            <td>{{ info.get('active', 0) or 0 }}</td>
+            <td>{{ info.get('task-received', 0) }}</td>
+            <td>{{ info.get('task-failed', 0) }}</td>
+            <td>{{ info.get('task-succeeded', 0) }}</td>
+            <td>{{ info.get('task-retried', 0) }}</td>
+            <td>{{ humanize(info.get('loadavg', 'N/A')) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+        </div>
+    </div>
+
+{% endblock %}

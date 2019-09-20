@@ -1,0 +1,5 @@
+{% if debug and error_trace %}
+<pre>
+{{ error_trace.decode('utf8','replace') }}
+</pre>
+{% endif %}
